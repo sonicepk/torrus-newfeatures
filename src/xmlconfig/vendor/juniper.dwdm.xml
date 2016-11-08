@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<!--
+   Copyright (C) 2005  Stanislav Sinyagin
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+
+   $Id$
+-->
+
+
+<!--
+   Juniper_IFOPTICS_MIB
+   Juniper SNR line statistics
+-->
+
+
+<configuration>
+
+<definitions>
+  <!-- Table jnxOpticsPMCurrentEntry -->
+  <!--  <def name="jnxOpticsPMCurrentEntry"         value="1.3.6.1.4.1.2636.3.71.1.2.1.1" /> -->
+    <def name="jnxPMCurChromaticDispersion"     value="1.3.6.1.4.1.2636.3.71.1.2.1.1.1" />
+    <def name="jnxPMCurDiffGroupDelay"          value="1.3.6.1.4.1.2636.3.71.1.2.1.1.2" />
+    <def name="jnxPMCurPolarizationState"       value="1.3.6.1.4.1.2636.3.71.1.2.1.1.3" />
+    <def name="jnxPMCurPolarDepLoss"            value="1.3.6.1.4.1.2636.3.71.1.2.1.1.4" />
+    <def name="jnxPMCurQ"                       value="1.3.6.1.4.1.2636.3.71.1.2.1.1.5" />
+    <def name="jnxPMCurSNR"                     value="1.3.6.1.4.1.2636.3.71.1.2.1.1.6" />
+    <def name="jnxPMCurTxOutputPower"           value="1.3.6.1.4.1.2636.3.71.1.2.1.1.7" />
+    <def name="jnxPMCurRxInputPower"            value="1.3.6.1.4.1.2636.3.71.1.2.1.1.8" />
+    <def name="jnxPMCurMinChromaticDispersion"  value="1.3.6.1.4.1.2636.3.71.1.2.1.1.9" />
+    <def name="jnxPMCurTxLaserBiasCurrent"      value="1.3.6.1.4.1.2636.3.71.1.2.1.1.35" />
+    <def name="jnxPMCurTemperature"             value="1.3.6.1.4.1.2636.3.71.1.2.1.1.39" />
+    <def name="jnxPMCurCarFreqOffset"           value="'1.3.6.1.4.1.2636.3.71.1.2.1.1.43" />
+    <def name="jnxPMCurRxLaserBiasCurrent"      value="1.3.6.1.4.1.2636.3.71.1.2.1.1.47" />
+
+</definitions>
+
+<datasources>
+
+  <template name="dwdm-subtree">
+    <param name="precedence"     value="-600" />
+    <param name="comment"        value="Current DWDM values" />
+    <param name="graph-title"          value="%graph-string%" />
+    <param name="rrd-hwpredict"     value="disabled" />
+        <param name="data-file"
+               value="%system-id%_%interface-nick%_dwdm.rrd" />
+        <param name="devdiscover-nodetype"
+               value="Juniper_IFOPTICS_MIB::jnxOpticsPMCurrentEntry" />
+  </template>
+
+  <template name="dwdm-interface">
+    <!-- ********   DWDM Statistics from table jnxOpticsPMCurrentEntry ************ -->
+    <leaf name="jnxPMCurChromaticDispersion">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxPMCurChromaticDispersion" />
+        <param name="snmp-object"       value="$jnxPMCurChromaticDispersion.%interface-index%" />
+        <param name="rrd-ds"            value="Chromatic" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="jnxPMCurChromaticDispersion" />
+        <param name="vertical-label"    value="ps/nm" />
+        <param name="nodeid"            value="%nodeid-interface-chromatic-dispersion%"/>
+        <param name="rrd-create-min"    value="-4000"/>
+    </leaf>
+    <leaf name="jnxPMCurDiffGroupDelay">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxPMCurDiffGroupDelay" />
+        <param name="snmp-object"       value="$jnxPMCurDiffGroupDelay.%interface-index%" />
+        <param name="rrd-ds"            value="DiffDelay" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="jnxPMCurDiffGroupDelay" />
+        <param name="vertical-label"    value="ps" />
+        <param name="nodeid"            value="%nodeid-interface-diff-delay%"/>
+    </leaf>
+    <leaf name="jnxPMCurTemperature">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxPMCurTemperature" />
+        <param name="snmp-object"       value="$jnxPMCurTemperature.%interface-index%" />
+        <param name="rrd-ds"            value="temp" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="jnxPMCurTemperature" />
+        <param name="vertical-label"    value="Degrees C" />
+        <param name="nodeid"            value="%nodeid-interface-temp%"/>
+    </leaf>
+    <leaf name="jnxPMCurSNR">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxPMCurSNR" />
+        <param name="snmp-object"       value="$jnxPMCurSNR.%interface-index%" />
+        <param name="collector-scale"   value="10,/" />
+        <param name="rrd-ds"            value="CurSNR" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="Signal to Noise Ratio" />
+        <param name="vertical-label"    value="dB" />
+        <param name="graph-lower-limit" value="0" />
+        <param name="nodeid"            value="%nodeid-interface-snr%"/>
+    </leaf>
+    <leaf name="jnxPMCurQ">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxPMCurQ" />
+        <param name="snmp-object"       value="$jnxPMCurQ.%interface-index%" />
+        <param name="collector-scale"   value="10,/" />
+        <param name="rrd-ds"            value="CurQ" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="Current Q Value" />
+        <param name="vertical-label"    value="dB" />
+        <param name="graph-lower-limit" value="0" />
+        <param name="nodeid"            value="%nodeid-interface-curq%"/>
+    </leaf>
+    <leaf name="jnxPMCurTxOutputPower">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxPMCurTxOutputPower" />
+        <param name="snmp-object"       value="$jnxPMCurTxOutputPower.%interface-index%" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="rrd-ds"            value="TxOutputPower" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="TX output power" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-tx-power%"/>
+    </leaf>
+    <leaf name="jnxPMCurRxInputPower">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxPMCurRxInputPower" />
+        <param name="snmp-object"       value="$jnxPMCurRxInputPower.%interface-index%" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="rrd-ds"            value="RxInputPower" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="TX input power" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-rx-power%"/>
+        <param name="rrd-create-min"    value="-100"/>
+    </leaf>
+    <leaf name="jnxPMCurRxLaserBiasCurrent">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxPMCurRxLaserBiasCurrent" />
+        <param name="snmp-object"       value="$jnxPMCurRxLaserBiasCurrent.%interface-index%" />
+        <param name="collector-scale"   value="10,/" />
+        <param name="rrd-ds"            value="LaserRxBias" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="Laser Rx Bias Current" />
+        <param name="vertical-label"    value="mA" />
+        <param name="nodeid"            value="%nodeid-interface-laser-rx-bias%"/>
+    </leaf>
+    <leaf name="jnxPMCurTxLaserBiasCurrent">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxPMCurTxLaserBiasCurrent" />
+        <param name="snmp-object"       value="$jnxPMCurTxLaserBiasCurrent.%interface-index%" />
+        <param name="collector-scale"   value="10,/" />
+        <param name="rrd-ds"            value="LaserTxBias" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="Laser Tx Bias Current" />
+        <param name="vertical-label"    value="mA" />
+        <param name="nodeid"            value="%nodeid-interface-laser-tx-bias%"/>
+    </leaf>
+
+  </template>
+
+</datasources>
+
+</configuration>
