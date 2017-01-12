@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<!--
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+
+   $Id$
+-->
+
+
+<!--
+   Juniper_DOM_MIB
+   Juniper Digital Optical Monitoring statistics
+-->
+
+
+<configuration>
+
+<definitions>
+<!-- Table jnxDomCurrentLaneEntry -->
+    <def name="jnxDomCurrentLaneRxLaserPower"               value="1.3.6.1.4.1.2636.3.60.1.2.1.1.6" />
+    <def name="jnxDomCurrentLaneTxLaserOutputPower"         value="1.3.6.1.4.1.2636.3.60.1.2.1.1.8" />
+    </definitions>
+
+<datasources>
+
+
+  <template name="domlane-interface">
+    <!-- ********   DOM Statistics from table  ************ -->
+    <leaf name="jnxDomCurrentLaneRxLaserPower-Lane0">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM jnxDomCurrentLaneRxLaserPower Lane 0" />
+        <param name="snmp-object"       value="$jnxDomCurrentLaneRxLaserPower.%interface-index-0%" />
+        <param name="rrd-ds"            value="RxLaser0" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="graph-legend"      value="jnxDomCurrentLaneRxLaserPower Lane 0" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-rx-power-lane0%"/>
+        <param name="rrd-create-min"    value="-100"/>
+        <param name="hidden"            value="yes"/>
+    </leaf>
+    <leaf name="jnxDomCurrentLaneRxLaserPower-Lane1">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM jnxDomCurrentLaneRxLaserPower Lane 1" />
+        <param name="snmp-object"       value="$jnxDomCurrentLaneRxLaserPower.%interface-index-1%" />
+        <param name="rrd-ds"            value="RxLaser1" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="graph-legend"      value="jnxDomCurrentLaneRxLaserPower Lane 1" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-rx-power-lane1%"/>
+        <param name="rrd-create-min"    value="-100"/>
+        <param name="hidden"            value="yes"/>
+    </leaf>
+    <leaf name="jnxDomCurrentLaneRxLaserPower-Lane2">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM jnxDomCurrentLaneRxLaserPower Lane 2" />
+        <param name="snmp-object"       value="$jnxDomCurrentLaneRxLaserPower.%interface-index-2%" />
+        <param name="rrd-ds"            value="RxLaser2" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="graph-legend"      value="jnxDomCurrentLaneRxLaserPower Lane 2" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-rx-power-lane2%"/>
+        <param name="rrd-create-min"    value="-100"/>
+        <param name="hidden"            value="yes"/>
+    </leaf>
+    <leaf name="jnxDomCurrentLaneRxLaserPower-Lane3">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM jnxDomCurrentLaneRxLaserPower Lane 3" />
+        <param name="snmp-object"       value="$jnxDomCurrentLaneRxLaserPower.%interface-index-3%" />
+        <param name="rrd-ds"            value="RxLaser3" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="graph-legend"      value="jnxDomCurrentLaneRxLaserPower Lane 3" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-rx-power-lane3%"/>
+        <param name="rrd-create-min"    value="-100"/>
+        <param name="hidden"            value="yes"/>
+    </leaf>
+    <leaf name="jnxDomCurrentLaneTxLaserOutputPower-Lane0">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM jnxDomCurrentLaneTxLaserOutputPower Lane 0" />
+        <param name="snmp-object"       value="$jnxDomCurrentLaneTxLaserOutputPower.%interface-index-0%" />
+        <param name="rrd-ds"            value="TxLaser0" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="graph-legend"      value="jnxDomCurrentLaneTxLaserOutputPower Lane 0" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-tx-power-lane0%"/>
+        <param name="rrd-create-min"    value="-20"/>
+        <param name="hidden"            value="yes"/>
+    </leaf>
+    <leaf name="jnxDomCurrentLaneTxLaserOutputPower-Lane1">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM jnxDomCurrentLaneTxLaserOutputPower Lane 1" />
+        <param name="snmp-object"       value="$jnxDomCurrentLaneTxLaserOutputPower.%interface-index-1%" />
+        <param name="rrd-ds"            value="TxLaser1" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="graph-legend"      value="jnxDomCurrentLaneTxLaserOutputPower Lane 1" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-tx-power-lane1%"/>
+        <param name="rrd-create-min"    value="-20"/>
+        <param name="hidden"            value="yes"/>
+    </leaf>
+    <leaf name="jnxDomCurrentLaneTxLaserOutputPower-Lane2">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM jnxDomCurrentLaneTxLaserOutputPower Lane 2" />
+        <param name="snmp-object"       value="$jnxDomCurrentLaneTxLaserOutputPower.%interface-index-2%" />
+        <param name="rrd-ds"            value="TxLaser2" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="graph-legend"      value="jnxDomCurrentLaneTxLaserOutputPower Lane 2" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-tx-power-lane2%"/>
+        <param name="rrd-create-min"    value="-20"/>
+        <param name="hidden"            value="yes"/>
+    </leaf>
+    <leaf name="jnxDomCurrentLaneTxLaserOutputPower-Lane3">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM jnxDomCurrentLaneTxLaserOutputPower Lane 3" />
+        <param name="snmp-object"       value="$jnxDomCurrentLaneTxLaserOutputPower.%interface-index-3%" />
+        <param name="rrd-ds"            value="TxLaser3" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="graph-legend"      value="jnxDomCurrentLaneTxLaserOutputPower Lane 3" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-tx-power-lane3%"/>
+        <param name="rrd-create-min"    value="-20"/>
+        <param name="hidden"            value="yes"/>
+    </leaf>
+    <leaf name="RX_Multigraph">
+        <param name="ds-type" value="rrd-multigraph" />
+        <param name="ds-names" value="RxLaser0, RxLaser1, RxLaser2, RxLaser3" />
+        
+        <param name="ds-expr-RxLaser0"      value="{jnxDomCurrentLaneRxLaserPower-Lane0}"/>
+        <param name="graph-legend-RxLaser0" value="RX Lane 0 Power dB" />
+        <param name="line-style-RxLaser0"   value="LINE2" />
+        <param name="line-color-RxLaser0"   value="#0000FF" />
+        <param name="line-order-RxLaser0"   value="2" />
+       
+        <param name="ds-expr-RxLaser1"      value="{jnxDomCurrentLaneRxLaserPower-Lane1}"/>
+        <param name="graph-legend-RxLaser1" value="RX Lane 1 Power dB" />
+        <param name="line-style-RxLaser1"   value="LINE3" />
+        <param name="line-color-RxLaser1"   value="#00FF00" />
+        <param name="line-order-RxLaser1"   value="3" />
+        
+        <param name="ds-expr-RxLaser2"      value="{jnxDomCurrentLaneRxLaserPower-Lane2}"/>
+        <param name="graph-legend-RxLaser2" value="RX Lane 2 Power dB" />
+        <param name="line-style-RxLaser2"   value="LINE4" />
+        <param name="line-color-RxLaser2"   value="#FF0000" />
+        <param name="line-order-RxLaser2"   value="4" />
+        
+        <param name="ds-expr-RxLaser3"      value="{jnxDomCurrentLaneRxLaserPower-Lane3}"/>
+        <param name="graph-legend-RxLaser3" value="RX Lane 3 Power dB" />
+        <param name="line-style-RxLaser3"   value="LINE5" />
+        <param name="line-color-RxLaser3"   value="#000000" />
+        <param name="line-order-RxLaser3"   value="5" />
+    </leaf>
+    <leaf name="TX_Multigraph">
+        <param name="ds-type" value="rrd-multigraph" />
+        <param name="ds-names" value="TxLaser0, TxLaser1, TxLaser2, TxLaser3" />
+        
+        <param name="ds-expr-TxLaser0"      value="{jnxDomCurrentLaneTxLaserOutputPower-Lane0}"/>
+        <param name="graph-legend-TxLaser0" value="TX Lane 0 Power dB" />
+        <param name="line-style-TxLaser0"   value="LINE2" />
+        <param name="line-color-TxLaser0"   value="#0000FF" />
+        <param name="line-order-TxLaser0"   value="2" />
+       
+        <param name="ds-expr-TxLaser1"      value="{jnxDomCurrentLaneTxLaserOutputPower-Lane1}"/>
+        <param name="graph-legend-TxLaser1" value="TX Lane 1 Power dB" />
+        <param name="line-style-TxLaser1"   value="LINE3" />
+        <param name="line-color-TxLaser1"   value="#00FF00" />
+        <param name="line-order-TxLaser1"   value="3" />
+        
+        <param name="ds-expr-TxLaser2"      value="{jnxDomCurrentLaneTxLaserOutputPower-Lane2}"/>
+        <param name="graph-legend-TxLaser2" value="TX Lane 2 Power dB" />
+        <param name="line-style-TxLaser2"   value="LINE4" />
+        <param name="line-color-TxLaser2"   value="#FF0000" />
+        <param name="line-order-TxLaser2"   value="4" />
+        
+        <param name="ds-expr-TxLaser3"      value="{jnxDomCurrentLaneTxLaserOutputPower-Lane3}"/>
+        <param name="graph-legend-TxLaser3" value="TX Lane 3 Power dB" />
+        <param name="line-style-TxLaser3"   value="LINE5" />
+        <param name="line-color-TxLaser3"   value="#000000" />
+        <param name="line-order-TxLaser3"   value="5" />
+    </leaf>
+  </template>
+
+</datasources>
+
+</configuration>

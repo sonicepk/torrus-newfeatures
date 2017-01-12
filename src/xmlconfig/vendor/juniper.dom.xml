@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!--
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+
+   $Id$
+-->
+
+
+<!--
+   Juniper_DOM_MIB
+   Juniper Digital Optical Monitoring statistics
+-->
+
+
+<configuration>
+
+<definitions>
+<!-- Table jnxDomCurrentEntry -->
+    <def name="jnxDomCurrentRxLaserPower"                   value="1.3.6.1.4.1.2636.3.60.1.1.1.1.5" />
+    <def name="jnxDomCurrentTxLaserOutputPower"             value="1.3.6.1.4.1.2636.3.60.1.1.1.1.7" />
+    </definitions>
+
+<datasources>
+
+  <template name="dom-subtree">
+    <param name="precedence"     value="-600" />
+    <param name="comment"        value="Current Digital Optical Monitoring values" />
+    <param name="graph-title"          value="%graph-string%" />
+    <param name="rrd-hwpredict"     value="disabled" />
+        <param name="data-file"
+               value="%system-id%_%interface-nick%_dom.rrd" />
+        <param name="devdiscover-nodetype"
+               value="Juniper_DOM_MIB::jnxDomCurrentEntry" />
+  </template>
+
+  <template name="dom-interface">
+    <!-- ********   DOM Statistics from table jnxDomCurrentEntry ************ -->
+    <leaf name="jnxDomCurrentRxLaserPower">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM jnxDomCurrentRxLaserPower" />
+        <param name="snmp-object"       value="$jnxDomCurrentRxLaserPower.%interface-index%" />
+        <param name="rrd-ds"            value="RxLaserPower" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="graph-legend"      value="jnxDomCurrentRxLaserPower" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-rx-power%"/>
+        <param name="rrd-create-min"    value="-100"/>
+        <param name="hidden"            value="yes"/>
+    </leaf>
+    <leaf name="jnxDomCurrentTxLaserOutputPower">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM jnxDomCurrentTxLaserOutputPower" />
+        <param name="snmp-object"       value="$jnxDomCurrentTxLaserOutputPower.%interface-index%" />
+        <param name="rrd-ds"            value="TxLaserPower" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="collector-scale"   value="100,/" />
+        <param name="graph-legend"      value="jnxDomCurrentTxLaserOutputPower" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-tx-power%"/>
+        <param name="rrd-create-min"    value="-20"/>
+        <param name="hidden"            value="yes"/>
+    </leaf>
+    <leaf name="TX_RX_Multigraph">
+        <param name="ds-type" value="rrd-multigraph" />
+        <param name="ds-names" value="RxLaser, TxLaser" />
+
+        <param name="ds-expr-RxLaser"      value="{jnxDomCurrentRxLaserPower}"/>
+        <param name="graph-legend-RxLaser" value="RX Input Power dB" />
+        <param name="line-style-RxLaser"   value="LINE2" />
+        <param name="line-color-RxLaser"   value="#0000FF" />
+        <param name="line-order-RxLaser"   value="2" />
+
+        <param name="ds-expr-TxLaser"      value="{jnxDomCurrentTxLaserOutputPower}"/>
+        <param name="graph-legend-TxLaser" value="TX Output Power dB" />
+        <param name="line-style-TxLaser"   value="LINE3" />
+        <param name="line-color-TxLaser"   value="#00FF00" />
+        <param name="line-order-TxLaser"   value="3" />
+    </leaf>
+  </template>
+
+</datasources>
+
+</configuration>

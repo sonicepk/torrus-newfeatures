@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!--
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+
+   $Id$
+-->
+
+
+<!--
+   Juniper JNX-OPT-IF-EXT-MIB_
+   Juniper 100G DWDM FEC statistics
+-->
+
+
+<configuration>
+
+<definitions>
+  <!-- Table jnxoptIfOTNPMFECCurrentEntry -->
+    <def name="jnxoptIfOTNPMFECCurrentEntry"            value="1.3.6.1.4.1.2636.3.73.1.3.3.8.1" />
+    <def name="jnxoptIfOTNPMCurrentFECCorrectedErr"     value="1.3.6.1.4.1.2636.3.73.1.3.3.8.1.3" />
+    <def name="jnxoptIfOTNPMCurrentFECUncorrectedWords" value="1.3.6.1.4.1.2636.3.73.1.3.3.8.1.4" />
+    <def name="jnxoptIfOTNPMCurrentFECBERMantissa"      value="1.3.6.1.4.1.2636.3.73.1.3.3.8.1.5" />
+    <def name="jnxoptIfOTNPMCurrentFECBERExponent"      value="1.3.6.1.4.1.2636.3.73.1.3.3.8.1.6" />
+</definitions>
+
+<datasources>
+
+  <template name="dwdmfec-subtree">
+    <param name="precedence"     value="-700" />
+    <param name="comment"        value="Current DWDM FEC values" />
+    <param name="graph-title"          value="%graph-string%" />
+    <param name="rrd-hwpredict"     value="disabled" />
+        <param name="data-file"
+               value="%system-id%_%interface-nick%_dwdmfec.rrd" />
+        <param name="devdiscover-nodetype"
+               value="Juniper_OPT_IF_EXT_MIB::jnxoptIfOTNPMFECCurrentEntry" />
+  </template>
+
+  <template name="dwdmfec-interface">
+    <!-- ********   DWDM FEC Statistics from table jnxoptIfOTNPMFECCurrentEntry ************ -->
+    <leaf name="jnxoptIfOTNPMCurrentFECCorrectedErr">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxoptIfOTNPMCurrentFECCorrectedErr" />
+        <param name="snmp-object"       value="$jnxoptIfOTNPMCurrentFECCorrectedErr.%interface-index%.%nearEnd%" />
+        <param name="snmp-object-type" value="COUNTER64" />
+        <param name="rrd-create-max"    value="1e15"/>
+        <param name="rrd-ds"            value="FECCorrected" />
+        <param name="rrd-create-dstype" value="COUNTER" />
+        <param name="graph-legend"      value="jnxoptIfOTNPMCurrentFECCorrectedErr" />
+        <param name="vertical-label"    value="Number of Errors" />
+        <param name="nodeid"            value="%nodeid-interface-fec-corrected%"/>
+    </leaf>
+    <leaf name="jnxoptIfOTNPMCurrentFECUncorrectedWords">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxoptIfOTNPMCurrentFECUncorrectedWords" />
+        <param name="snmp-object"       value="$jnxoptIfOTNPMCurrentFECUncorrectedWords.%interface-index%.%nearEnd%" />
+        <param name="rrd-ds"            value="FECUNCorrected" />
+        <param name="snmp-object-type" value="COUNTER64" />
+        <param name="rrd-create-dstype" value="COUNTER" />
+        <param name="graph-legend"      value="jnxoptIfOTNPMCurrentFECUncorrectedWord" />
+        <param name="vertical-label"    value="Number of Uncorrected Errors" />
+        <param name="nodeid"            value="%nodeid-interface-fec-uncorrected%"/>
+    </leaf>
+    <leaf name="jnxoptIfOTNPMCurrentFECBERMantissa">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxoptIfOTNPMCurrentFECBERMantissa" />
+        <param name="snmp-object"       value="$jnxoptIfOTNPMCurrentFECBERMantissa.%interface-index%.%nearEnd%" />
+        <param name="rrd-ds"            value="FECMan" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="jnxoptIfOTNPMCurrentFECBERMantissa" />
+        <param name="vertical-label"    value="FEC Mantissa" />
+        <param name="nodeid"            value="%nodeid-fec-mantissa%"/>
+    </leaf>
+    <leaf name="jnxoptIfOTNPMCurrentFECBERExponent">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DWDM jnxoptIfOTNPMCurrentFECBERExponent" />
+        <param name="snmp-object"       value="$jnxoptIfOTNPMCurrentFECBERExponent.%interface-index%.%nearEnd%" />
+        <param name="rrd-ds"            value="FECExponent" />
+        <param name="collector-scale"   value="-1,*" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="FEC Exponent" />
+        <param name="nodeid"            value="%nodeid-fec-exponent%"/>
+        <param name="rrd-create-min"    value="-100"/>
+     </leaf>
+    <leaf name="FEC_rate">
+        <param name="comment"           value="OTN FEC Rate" />
+        <param name="ds-type"             value="rrd-file" />
+        <param name="leaf-type"           value="rrd-cdef" />
+        <param name="graph-legend"      value="FEC Rate" />
+        <param name="rpn-expr"            value="{/Julio/%system-id%/dwdmfec/%interface-nick%/jnxoptIfOTNPMCurrentFECBERExponent},EXP,{/Julio/%system-id%/dwdmfec/%interface-nick%/jnxoptIfOTNPMCurrentFECBERMantissa},* " />
+        <param name="precedence"        value="900" />
+        <param name="rrd-create-min"    value="1e-15" />
+        <param name="graph-string"      value="The number of errored bits at reveiver before FEC" />
+    </leaf>
+
+  </template>
+
+</datasources>
+
+</configuration>

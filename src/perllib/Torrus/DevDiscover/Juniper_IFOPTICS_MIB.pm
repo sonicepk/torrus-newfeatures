@@ -72,7 +72,7 @@ sub checkdevtype
         $matched = 1;
         $devdetails->setCap('jnxOpticsPMCurrentEntry');
     }
-#	print "matched = $matched\n";
+	#print "matched = $matched\n";
     return $matched;
 }
 
@@ -96,7 +96,7 @@ sub discover
 
                $data->{'dwdm'}{$ifIndex} = 1;
             }
-#	       print Dumper($data->{'dwdm'});
+	       #print Dumper($data->{'dwdm'});
         }
     return 1;
 }
@@ -109,12 +109,12 @@ sub buildConfig
     my $devNode = shift;
 
     my $data = $devdetails->data();
-        print "Dump of all $data", Dumper($data);
+        #print "Dump of all $data", Dumper($data);
 
         my $subtreeName = 'dwdm';
 
         my $subtreeParam = {
-            'precedence'          => '-600',
+            'precedence'          => '600',
             'node-display-name'   => 'DWDM  Statistics',
             'comment'        => 'DWDM interface statistics ',
         };
@@ -132,7 +132,6 @@ sub buildConfig
 
             my $ifSubtreeName =
                 $interface->{$data->{'nameref'}{'ifSubtreeName'}};
-#	       print "ifSubtreeName", Dumper($ifSubtreeName);
 
            $interface->{'param'}{'devdiscover-nodetype'} =
            'Juniper_IFOPTICS_MIB::jnxOpticsPMCurrentEntry';

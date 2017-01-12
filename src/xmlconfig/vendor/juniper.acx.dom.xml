@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!--
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+
+   $Id$
+-->
+
+
+<!--
+   Juniper_DOM_MIB
+   Juniper Digital Optical Monitoring statistics
+-->
+
+
+<configuration>
+
+<definitions>
+<!-- Table jnxDomCurrentEntry -->
+    <def name="rx_power" value='1.3.6.1.4.1.2636.3.47.1.1.5.1.2.111.112.116.105.99.115.68' />
+    <def name="tx_power" value='1.3.6.1.4.1.2636.3.47.1.1.5.1.2.111.112.116.105.99.115.80' />
+</definitions>
+
+<datasources>
+
+  <template name="dom-acx-subtree">
+    <param name="precedence"     value="-600" />
+    <param name="comment"        value="Current ACX Digital Optical Monitoring values" />
+    <param name="graph-title"          value="%graph-string%" />
+    <param name="rrd-hwpredict"     value="disabled" />
+        <param name="data-file"
+               value="%system-id%_%interface-nick%_acxdom.rrd" />
+        <param name="devdiscover-nodetype"
+               value="Juniper_DOM_MIB::jnxACXDomCurrentEntry" />
+  </template>
+
+  <template name="acxdom-interface">
+    <!-- ********   DOM Statistics from table ACX ************ -->
+    <leaf name="CurrentRxLaserPower">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM ACX CurrentRxLaserPower" />
+        <param name="snmp-object"       value="$rx_power.%interface-index%" />
+        <param name="rrd-ds"            value="RxLaserPower" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="DomACXCurrentRxLaserPower" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-rx-power%"/>
+        <param name="rrd-create-min"    value="-100"/>
+    </leaf>
+  </template>
+
+</datasources>
+
+</configuration>
