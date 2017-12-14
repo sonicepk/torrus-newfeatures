@@ -71,7 +71,8 @@ sub checkdevtype
 	    #print "matched dom = $matched\n";
     }
     if( $devdetails->paramEnabled('Juniper_DOM_MIB::dom-stats') and
-        $dd->checkSnmpTable('rx_power') )
+        $dd->checkSnmpTable('rx_power') and
+        !$dd->checkSnmpTable('jnxDomCurrentEntry')))
     {
         $matched = 1;
         $devdetails->setCap('acx_dom');
