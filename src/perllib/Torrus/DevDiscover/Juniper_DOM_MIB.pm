@@ -72,7 +72,7 @@ sub checkdevtype
     }
     if( $devdetails->paramEnabled('Juniper_DOM_MIB::dom-stats') and
         $dd->checkSnmpTable('rx_power') and
-        !$dd->checkSnmpTable('jnxDomCurrentEntry')))
+        !$dd->checkSnmpTable('jnxDomCurrentEntry'))
     {
         $matched = 1;
         $devdetails->setCap('acx_dom');

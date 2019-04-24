@@ -53,7 +53,7 @@
 
   <!-- =====  IP-MIB traffic counters ===== -->
   
-  <template name="ipifstats-hcoctets">
+  <template name="jnxipifstats-hcoctets">
     <leaf name="Bytes_In">
       <param name="snmp-object"
              value="$jnxIpv6IfInOctets.%interface-index%" />
