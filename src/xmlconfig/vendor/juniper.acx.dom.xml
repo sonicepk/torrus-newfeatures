@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <!--
+   Copyright (C) 2005  Stanislav Sinyagin
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -58,7 +59,36 @@
         <param name="vertical-label"    value="dB" />
         <param name="nodeid"            value="%nodeid-interface-rx-power%"/>
         <param name="rrd-create-min"    value="-100"/>
+        <param name="hidden" value="yes"/>
     </leaf>
+    <leaf name="CurrentTxLaserPower">
+        <param name="leaf-type"         value="rrd-def"/> 
+        <param name="comment"           value="DOM ACX CurrentTxLaserPower" />
+        <param name="snmp-object"       value="$tx_power.%interface-index%" />
+        <param name="rrd-ds"            value="TxLaserPower" />
+        <param name="rrd-create-dstype" value="GAUGE" />
+        <param name="graph-legend"      value="DomACXCurrentTxLaserPower" />
+        <param name="vertical-label"    value="dB" />
+        <param name="nodeid"            value="%nodeid-interface-tx-power%"/>
+        <param name="rrd-create-min"    value="-100"/>
+        <param name="hidden" value="yes"/>
+</leaf>
+    <leaf name="TX_RX_DOM">
+        <param name="ds-type" value="rrd-multigraph" />
+        <param name="ds-names" value="RX1, TX1" />
+        
+        <param name="ds-expr-RX1"      value="{CurrentRxLaserPower}"/>
+        <param name="graph-legend-RX1" value="RX Power dB" />
+        <param name="line-style-RX1"   value="LINE2" />
+        <param name="line-color-RX1"   value="#0000FF" />
+        <param name="line-order-RX1" value="2" />    
+        
+        <param name="ds-expr-TX1"      value="{CurrentTxLaserPower}"/>
+        <param name="graph-legend-TX1" value="TX Power dB" />
+        <param name="line-style-TX1"   value="LINE3" />
+        <param name="line-color-TX1"   value="#000000" />
+        <param name="line-order-TX1" value="3" />    
+</leaf>
   </template>
 
 </datasources>
