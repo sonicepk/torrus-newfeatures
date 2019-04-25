@@ -28,13 +28,13 @@ cmd=$1
 commands="acl=acledit acledit=acledit \
           bs=buildsearchdb buildsearchdb=buildsearchdb \
           cleanup=cleanup \
-          clc=clearcache clearcache=clearcache \
           collector=collector \
           compile=compilexml compilexml=compilexml \
           configinfo=configinfo ci=configinfo \
           snapshot=configsnapshot configsnapshot=configsnapshot \
           dd=devdiscover discover=devdiscover devdiscover=devdiscover \
           fm=flushmonitors flushmonitors=flushmonitors \
+          gc=gc \
           genddx=genddx \
           genlist=genlist \
           genreport=genreport report=genreport \

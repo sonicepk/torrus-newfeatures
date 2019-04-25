@@ -34,7 +34,7 @@ use Torrus::ConfigBuilder;
 
 my @infiles;
 my $makedirs;
-my $limitre;
+my @limitre;
 my $forcebundle;
 my $fallback;
 my $workerThreads = 0;
@@ -61,13 +61,12 @@ foreach my $arg ( @ARGV )
         $creator .= "\'" . $arg . "\'\\\n";
     }
 }
-$creator .= "\n On " . scalar(localtime(time));
 
 my $opts_ok = GetOptions
     (
      'in=s'        => \@infiles,
      'mkdir'       => \$makedirs,
-     'limit=s'     => \$limitre,
+     'limit=s'     => \@limitre,
      'forcebundle' => \$forcebundle,
      'fallback=i'  => \$fallback,
      'threads=i'   => \$workerThreads,
@@ -197,12 +196,28 @@ foreach my $infile ( @infiles )
             foreach my $bundleName ( split( /\s*,\s*/, $outBundles ) )
             {
                 $bundleName = absXmlFilename( $bundleName );
-                $outputBundles{$bundleName}{ relXmlFilename($outfile) } = 1;
+                $outputBundles{$bundleName}{$outfile} = 1;
             }
         }
     }
 }
 
+my @job;
+foreach my $outfile ( sort keys %{$perOutfileHostParams} )
+{
+    if( not matchLimitRe( $outfile ) )
+    {
+        next;
+    }
+
+    push(@job, $outfile);
+}
+
+# Do not start more threads than there are queued items
+if( $workerThreads > scalar(@job) )
+{
+    $workerThreads = scalar(@job);
+}
 
 # Start discovery
 my $jobQueue;
@@ -228,17 +243,12 @@ if( $workerThreads > 1 )
     $bundleDeletionQueue = new Thread::Queue;
     $confBuildSemaphore = new Thread::Semaphore;
 
-    # Enqueue the output filenames    
-    foreach my $outfile ( sort keys %{$perOutfileHostParams} )
+    # Enqueue the output filenames
+    foreach my $outfile ( @job )
     {
-        if( not matchLimitRe( $outfile ) )
-        {
-            next;
-        }
-
         $jobQueue->enqueue( $outfile );
     }
-
+    
     # Start the worker threads
     my @workers;
     foreach my $i ( 1..$workerThreads )
@@ -275,13 +285,8 @@ else
         &{$callback}();
     }
        
-    foreach my $outfile ( sort keys %{$perOutfileHostParams} )
+    foreach my $outfile ( @job )
     {
-        if( not matchLimitRe( $outfile ) )
-        {
-            next;
-        }
-        
         if( not doDiscover( $outfile ) )
         {
             removeFromBundle( $outfile );
@@ -298,12 +303,7 @@ else
 
 if( scalar( keys %outputBundles ) > 0 )
 {
-    if( defined( $limitre ) )
-    {
-        Warn('Cannot write bundles with --limit option specified. ' .
-             'Bundle files remain unchanged');
-    }
-    elsif( $everythingsOk )
+    if( $everythingsOk )
     {
         foreach my $bundleName ( sort keys %outputBundles )
         {
@@ -314,7 +314,14 @@ if( scalar( keys %outputBundles ) > 0 )
             foreach my $bundleMember
                 ( sort keys %{$outputBundles{$bundleName}} )
             {
-                $cb->addFileInclusion( $bundleMember );
+                if( not -e $bundleMember )
+                {
+                    Error('File does not exist: "' . $bundleMember . '", ' .
+                          'but the bundle ' . $bundleName . ' requires it');
+                    exit(0);
+                }
+                
+                $cb->addFileInclusion( relXmlFilename($bundleMember) );
             }
 
             my $ok = $cb->toFile( $bundleName );
@@ -468,16 +475,20 @@ sub matchLimitRe
 {
     my $filename = shift;
 
-    if( defined( $limitre ) )
+    if( scalar(@limitre) > 0 )
     {
         $filename =~ s/^.*\///;
 
-        if( $filename !~ $limitre )
+        foreach my $re (@limitre)
         {
-            return 0;
+            if( $filename =~ $re )
+            {
+                return 1;
+            }
         }
+        return 0;
     }
-
+    
     return 1;
 }
 
@@ -624,8 +635,6 @@ sub removeFromBundle
 {
     my $outfile = shift;
     
-    my $relname  = relXmlFilename($outfile);
-    
     my $removeFromBundle = 1;
         
     if( $forcebundle )
@@ -633,7 +642,7 @@ sub removeFromBundle
         if( defined( $fallback ) and
             -e $outfile and -M $outfile <= $fallback )
         {               
-            Warn('Falling back to the old version of ' . $relname);
+            Warn('Falling back to the old version of ' . $outfile);
             $removeFromBundle = 0;
         }
         $everythingsOk = 1;
@@ -643,11 +652,11 @@ sub removeFromBundle
     {
         foreach my $bundleName ( sort keys %outputBundles )
         {
-            if( exists( $outputBundles{$bundleName}{$relname} ) )
+            if( exists( $outputBundles{$bundleName}{$outfile} ) )
             {
-                delete $outputBundles{$bundleName}{$relname};
+                delete $outputBundles{$bundleName}{$outfile};
                 Warn('Bundle ' . $bundleName . ' will not have ' .
-                     $relname . ' included because of errors');
+                     $outfile . ' included because of errors');
             }
         }
     }

@@ -22,7 +22,8 @@ EXTRA_DIST = \
 	site-global.xml
 
 xmldir         = $(distxmldir)
-dist_xml_DATA  = defaults.xml snmp-defs.xml cdef-collector-defs.xml
+dist_xml_DATA  = \
+	defaults.xml snmp-defs.xml cdef-collector-defs.xml
 
 vendordir      = $(distxmldir)/vendor
 dist_vendor_DATA = \
@@ -42,6 +43,7 @@ dist_vendor_DATA = \
 	vendor/cisco.ios.xml \
 	vendor/cisco.ios.docsis.xml \
 	vendor/cisco.ios.mac-accounting.xml \
+	vendor/cisco.ios.saa.xml \
 	vendor/cisco.sce.xml \
 	vendor/cisco.vdsl-line.xml \
 	vendor/cisco.wlc.xml \
@@ -71,6 +73,7 @@ genericdir    =  $(distxmldir)/generic
 dist_generic_DATA = \
 	generic/collector-periods.xml \
 	generic/monitors.xml \
+	generic/mef-soam-pm-mib.xml \
 	generic/rfc1628.ups.xml \
 	generic/rfc1697.rdbms.xml \
 	generic/rfc2662.adsl-line.xml \
@@ -88,7 +91,6 @@ dist_examples_DATA = \
 	examples/generic-netsnmp.xml \
 	examples/hpux.xml \
 	examples/monitors.xml \
-	examples/multigraph.xml \
 	examples/rainbow-schema.xml \
 	examples/servers.data \
 	examples/servers.tmpl

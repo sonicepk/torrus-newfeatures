@@ -72,14 +72,17 @@ $Torrus::DevDiscover::timeFormat = '%d-%m-%Y %H:%M';
      'Torrus::DevDiscover::CiscoWLC',
      'Torrus::DevDiscover::CompaqCIM',
      'Torrus::DevDiscover::ComtechEFData',
+     'Torrus::DevDiscover::Denkovi',
      'Torrus::DevDiscover::EmpireSystemedge',
      'Torrus::DevDiscover::F5BigIp',
      'Torrus::DevDiscover::Fortinet',
      'Torrus::DevDiscover::Foundry',
      'Torrus::DevDiscover::FTOS',
+     'Torrus::DevDiscover::IEEE8021_CFM_MIB',
      'Torrus::DevDiscover::Jacarta',
      'Torrus::DevDiscover::JunOS',
      'Torrus::DevDiscover::Liebert',
+     'Torrus::DevDiscover::MEF_SOAM_PM_MIB',
      'Torrus::DevDiscover::MicrosoftWindows',
      'Torrus::DevDiscover::MotorolaBSR',
      'Torrus::DevDiscover::NetApp',
@@ -762,15 +765,31 @@ $Torrus::DevDiscover::timeFormat = '%d-%m-%Y %H:%M';
          },
      'CiscoIOS_SAA::cisco-saa-subtree' => {
          'name'   => 'cisco-saa-subtree',
-         'source' => 'vendor/cisco.ios.xml'
+         'source' => 'vendor/cisco.ios.saa.xml'
          },
      'CiscoIOS_SAA::cisco-rtt-echo-subtree' => {
          'name'   => 'cisco-rtt-echo-subtree',
-         'source' => 'vendor/cisco.ios.xml'
+         'source' => 'vendor/cisco.ios.saa.xml'
          },
      'CiscoIOS_SAA::cisco-rtt-jitter-subtree' => {
          'name'   => 'cisco-rtt-jitter-subtree',
-         'source' => 'vendor/cisco.ios.xml'
+         'source' => 'vendor/cisco.ios.saa.xml'
+         },
+     'CiscoIOS_SAA::cisco-saa-soam-lm-subtree' => {
+         'name'   => 'cisco-saa-soam-lm-subtree',
+         'source' => 'vendor/cisco.ios.saa.xml'
+         },
+     'CiscoIOS_SAA::cisco-saa-soam-lm' => {
+         'name'   => 'cisco-saa-soam-lm',
+         'source' => 'vendor/cisco.ios.saa.xml'
+         },
+     'CiscoIOS_SAA::cisco-saa-soam-dm-subtree' => {
+         'name'   => 'cisco-saa-soam-dm-subtree',
+         'source' => 'vendor/cisco.ios.saa.xml'
+         },
+     'CiscoIOS_SAA::cisco-saa-soam-dm' => {
+         'name'   => 'cisco-saa-soam-dm',
+         'source' => 'vendor/cisco.ios.saa.xml'
          },
      'CiscoFirewall::cisco-firewall-subtree' => {
          'name'   => 'cisco-firewall-subtree',
@@ -861,6 +880,20 @@ $Torrus::DevDiscover::timeFormat = '%d-%m-%Y %H:%M';
      'ComtechEFData::cdmip' => {
          'name'     => 'cdmip',
          'source'   => 'vendor/comtechefdata.xml',
+     },
+
+     #### Denkovi Electronics
+     'Denkovi::input-analog-subtree' => {
+         'name'     => 'input-analog-subtree',
+         'source'   => 'vendor/denkovi.xml',
+     },
+     'Denkovi::input-analog-value' => {
+         'name'     => 'input-analog-value',
+         'source'   => 'vendor/denkovi.xml',
+     },
+     'Denkovi::input-analog-value-subtree' => {
+         'name'     => 'input-analog-value-subtree',
+         'source'   => 'vendor/denkovi.xml',
      },
 
      #### Empire Sysedge
@@ -1356,33 +1389,83 @@ $Torrus::DevDiscover::timeFormat = '%d-%m-%Y %H:%M';
 
 
      ##### Liebert
-     'Liebert::humidity-sensor' => {
-         'name'     => 'humidity-sensor',
+     'Liebert::envhumidity-subtree' => {
+         'name'     => 'envhumidity-subtree',
          'source'   => 'vendor/liebert.xml',
      },
-     'Liebert::humidity-subtree' => {
-         'name'     => 'humidity-subtree',
+     'Liebert::envhumidity-sensor-leaf' => {
+         'name'     => 'envhumidity-sensor-leaf',
          'source'   => 'vendor/liebert.xml',
      },
-     'Liebert::state-subtree' => {
-         'name'     => 'state-subtree',
+     'Liebert::envstate-subtree' => {
+         'name'     => 'envstate-subtree',
          'source'   => 'vendor/liebert.xml',
      },
-     'Liebert::state-capacity' => {
-         'name'     => 'state-capacity',
+     'Liebert::envstate-leaf' => {
+         'name'     => 'envstate-leaf',
          'source'   => 'vendor/liebert.xml',
      },
-     'Liebert::temperature-subtree' => {
-         'name'     => 'temperature-subtree',
+     'Liebert::envstatistics-subtree' => {
+         'name'     => 'envstatistics-subtree',
          'source'   => 'vendor/liebert.xml',
      },
-     'Liebert::temperature-sensor' => {
-         'name'     => 'temperature-sensor',
+     'Liebert::envstatistics-leaf' => {
+         'name'     => 'envstatistics-leaf',
          'source'   => 'vendor/liebert.xml',
      },
-     'Liebert::temperature-sensor-fahrenheit' => {
-         'name'     => 'temperature-sensor-fahrenheit',
+     'Liebert::envtemp-sensor-subtree' => {
+         'name'     => 'envtemp-sensor-subtree',
          'source'   => 'vendor/liebert.xml',
+     },
+     'Liebert::envtemp-sensor-leaf' => {
+         'name'     => 'envtemp-sensor-leaf',
+         'source'   => 'vendor/liebert.xml',
+     },
+
+     ##### MEF_SOAM_PM_MIB
+     'MEF_SOAM_PM_MIB::mef-soam-lm-subtree' => {
+         'name'     => 'mef-soam-lm-subtree',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
+     },
+     'MEF_SOAM_PM_MIB::mef-soam-dm-subtree' => {
+         'name'     => 'mef-soam-dm-subtree',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
+     },
+     'MEF_SOAM_PM_MIB::mef-soam-lm-forward-min-flr' => {
+         'name'     => 'mef-soam-lm-forward-min-flr',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
+     },
+     'MEF_SOAM_PM_MIB::mef-soam-lm-forward-max-flr' => {
+         'name'     => 'mef-soam-lm-forward-max-flr',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
+     },
+     'MEF_SOAM_PM_MIB::mef-soam-lm-forward-avg-flr' => {
+         'name'     => 'mef-soam-lm-forward-avg-flr',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
+     },
+     'MEF_SOAM_PM_MIB::mef-soam-lm-backward-min-flr' => {
+         'name'     => 'mef-soam-lm-backward-min-flr',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
+     },
+     'MEF_SOAM_PM_MIB::mef-soam-lm-backward-max-flr' => {
+         'name'     => 'mef-soam-lm-backward-max-flr',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
+     },
+     'MEF_SOAM_PM_MIB::mef-soam-lm-backward-avg-flr' => {
+         'name'     => 'mef-soam-lm-backward-avg-flr',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
+     },
+     'MEF_SOAM_PM_MIB::mef-soam-dm-twoway-min' => {
+         'name'     => 'mef-soam-dm-twoway-min',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
+     },
+     'MEF_SOAM_PM_MIB::mef-soam-dm-twoway-max' => {
+         'name'     => 'mef-soam-dm-twoway-max',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
+     },
+     'MEF_SOAM_PM_MIB::mef-soam-dm-twoway-avg' => {
+         'name'     => 'mef-soam-dm-twoway-avg',
+         'source'   => 'generic/mef-soam-pm-mib.xml',
      },
 
      

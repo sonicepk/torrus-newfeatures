@@ -349,12 +349,12 @@ sub discover
     while( my( $policyObjectIndex, $objectRef ) =
            each %{$data->{'cbqos_objects'}} )
     {
+        my $objType = $objectRef->{'cbQosObjectsType'};
         my $objConfIndex = $objectRef->{'cbQosConfigIndex'};
 
-        next if exists( $data->{'cbqos_objcfg'}{$objConfIndex} );
-        next if $data->{'cbqos_invalid_cfg'}{$objConfIndex};
+        next if exists( $data->{'cbqos_objcfg'}{$objType}{$objConfIndex} );
+        next if $data->{'cbqos_invalid_cfg'}{$objType}{$objConfIndex};
 
-        my $objType = $objectRef->{'cbQosObjectsType'};
         my $object = {};
         my @rows = ();
 
@@ -413,7 +413,7 @@ sub discover
                 Warn('cbQosTSCfgRateType for ' . $objConfIndex .
                      ' has unsupported value. It is ' .
                      'recommended to use cbQoS MIB persistency if possible');
-                $data->{'cbqos_invalid_cfg'}{$objConfIndex} = 1;
+                $data->{'cbqos_invalid_cfg'}{$objType}{$objConfIndex} = 1;
                 next;
             }
 
@@ -440,7 +440,7 @@ sub discover
                 Warn('cbQosPoliceCfgRateType for ' . $objConfIndex .
                      ' has unsupported value. It is ' .
                      'recommended to use cbQoS MIB persistency if possible');
-                $data->{'cbqos_invalid_cfg'}{$objConfIndex} = 1;
+                $data->{'cbqos_invalid_cfg'}{$objType}{$objConfIndex} = 1;
                 next;
             }
             
@@ -471,16 +471,15 @@ sub discover
             if( defined($value) and $value ne '' )
             {
                 $value = translateCbQoSValue( $value, $row );
-                $data->{'cbqos_objcfg'}{$objConfIndex}{$row} = $value;
+                $data->{'cbqos_objcfg'}{$objType}{$objConfIndex}{$row} = $value;
             }
-            elsif( $mandatory{$row} and
-                   not $data->{'cbqos_persistent_indexing'})
+            elsif( $mandatory{$row} )
             {
                 Warn('Missing required configuration in: ' .
                      'cbQosConfigIndex=' . $objConfIndex . ', row=' . $row .
-                     '. It is recommended to use cbQoS MIB persistency ' .
-                     ' if possible');
-                $data->{'cbqos_invalid_cfg'}{$objConfIndex} = 1;
+                     ' on ' . $devdetails->param('snmp-host') .
+                     '. The statistics will be disabled for collection.');
+                $data->{'cbqos_invalid_cfg'}{$objType}{$objConfIndex} = 1;
                 $objType = 'DELETED';
             }
         }
@@ -568,16 +567,16 @@ sub buildChildrenConfigs
         ( sort { $a <=> $b } @{$data->{'cbqos_children'}{$parentObjIndex}} )
     {      
         my $objectRef     = $data->{'cbqos_objects'}{$policyObjectIndex};
+        my $objType       = $objectRef->{'cbQosObjectsType'};
         
         next if $objectRef->{'selectorActions'}{'SkipObect'};
 
         my $objConfIndex  = $objectRef->{'cbQosConfigIndex'};
         next unless defined($objConfIndex);
 
-        next if $data->{'cbqos_invalid_cfg'}{$objConfIndex};
+        next if $data->{'cbqos_invalid_cfg'}{$objType}{$objConfIndex};
         
-        my $objType       = $objectRef->{'cbQosObjectsType'};
-        my $configRef     = $data->{'cbqos_objcfg'}{$objConfIndex};
+        my $configRef     = $data->{'cbqos_objcfg'}{$objType}{$objConfIndex};
 
         my $objectName = '';
         my $subtreeName = '';
@@ -1150,7 +1149,9 @@ my %cbQosValueTranslation =
          4 => 'atmPVC',
          5 => 'controlPlane',
          6 => 'vlanPort',
-         7 => 'evc' },
+         7 => 'evc',
+         # this value is not in officeial MIB, but ASR1000 IOS 16.5.1b uses it
+         8 => 'tunnel' }, 
 
      'cbQosPolicyDirection' => {
          1 => 'input',
@@ -1329,23 +1330,23 @@ sub checkSelectorAttribute
 {
     my $devdetails = shift;
     my $object = shift;
-    my $objType = shift;
+    my $selObjType = shift;
     my $attr = shift;
     my $checkval = shift;
 
     my $data = $devdetails->data();
     my $objectRef = $data->{'cbqos_objects'}{$object};
     my $objConfIndex  = $objectRef->{'cbQosConfigIndex'};
-    my $configRef     = $data->{'cbqos_objcfg'}{$objConfIndex};
+    my $objType = $objectRef->{'cbQosObjectsType'};
+    my $configRef = $data->{'cbqos_objcfg'}{$objType}{$objConfIndex};
 
-    my $type = $objectRef->{'cbQosObjectsType'};
-    my $value = $configRef->{$selObjectNameAttr{$type}};    
+    my $value = $configRef->{$selObjectNameAttr{$objType}};    
     
-    if( ($type eq 'policymap') and ($attr =~ /^PMName\d*$/) )
+    if( ($objType eq 'policymap') and ($attr =~ /^PMName\d*$/) )
     {
         return( ($value =~ $checkval) ? 1:0 );
     }
-    elsif( ($type eq 'classmap') and ($attr =~ /^CMName\d*$/) )
+    elsif( ($objType eq 'classmap') and ($attr =~ /^CMName\d*$/) )
     {
         return( ($value =~ $checkval) ? 1:0 );
     }
@@ -1358,17 +1359,17 @@ sub getSelectorObjectName
 {
     my $devdetails = shift;
     my $object = shift;
-    my $objType = shift;
+    my $selObjType = shift;
     
     my $data = $devdetails->data();
     my $objectRef = $data->{'cbqos_objects'}{$object};
     my $objConfIndex  = $objectRef->{'cbQosConfigIndex'};
-    my $configRef     = $data->{'cbqos_objcfg'}{$objConfIndex};
+    my $objType = $objectRef->{'cbQosObjectsType'};
+    my $configRef = $data->{'cbqos_objcfg'}{$objType}{$objConfIndex};
 
-    my $type = $objectRef->{'cbQosObjectsType'};
-    my $value = $configRef->{$selObjectNameAttr{$type}};    
+    my $value = $configRef->{$selObjectNameAttr{$objType}};    
 
-    return $type . '::' . $value;
+    return $objType . '::' . $value;
 }
 
 

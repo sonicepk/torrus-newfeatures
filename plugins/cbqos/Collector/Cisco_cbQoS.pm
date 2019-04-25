@@ -37,17 +37,6 @@ use Net::SNMP qw(:snmp);
 $Torrus::Collector::collectorTypes{'cisco-cbqos'} = 1;
 
 
-# List of needed parameters and default values
-
-$Torrus::Collector::params{'cisco-cbqos'} =
-    \%Torrus::Collector::Cisco_cbQoS_Params::requiredLeafParams;
-
-# Copy parameters from SNMP collector
-while( my($key, $val) = each %{$Torrus::Collector::params{'snmp'}} )
-{
-    $Torrus::Collector::params{'cisco-cbqos'}{$key} = $val;
-}
-
 my %oiddef =
     (
      # IF-MIB
@@ -108,6 +97,8 @@ my %cbQosValueTranslation =
          'controlPlane'   => 5,
          'vlanPort'       => 6,
          'evc'            => 7,
+         # this value is not in officeial MIB, but ASR1000 IOS 16.5.1b uses it
+         'tunnel'         => 8, 
      },
 
      'cbQosPolicyDirection' => {

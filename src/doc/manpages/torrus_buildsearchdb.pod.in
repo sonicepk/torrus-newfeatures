@@ -44,19 +44,18 @@ Build the indexes for a given tree.
 
 Builds the tree indexes for all trees.
 
-=item B<--global>
+=item B<--nogc>
 
-Builds the global index for all trees and also the tree indexes for every
-tree. In order to use the global search database, the web user
-should have the permission to display all trees and also it should have
-the permission for GlobalSearch for all trees, for example:
-
-   torrus acledit --addgroup=staff --permit=GlobalSearch --for='*'
-
+Normally the Git garbage collector is launched after the search database
+is updated. This option makes the builder skip the GC run.
 
 =item B<--verbose>
 
 Prints extra information
+
+=item B<--debug>
+
+Prints debugging information
 
 =item B<--help>
 
@@ -75,4 +74,3 @@ See more documentation at Torrus home page: http://torrus.org
 =head1 AUTHOR
 
 Stanislav Sinyagin E<lt>ssinyagin@k-open.comE<gt>
-
