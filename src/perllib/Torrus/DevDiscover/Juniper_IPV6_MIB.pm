@@ -238,7 +238,7 @@ sub buildConfig
                     $interface->{$data->{'nameref'}{'ifComment'}};
             }
 
-            my $templates = ['Juniper_IPV6_MIB::ipifstats-hcoctets'];
+            my $templates = ['Juniper_IPV6_MIB::jnxipifstats-hcoctets'];
             my $childParams = {};
 
             my $actionsRef =
