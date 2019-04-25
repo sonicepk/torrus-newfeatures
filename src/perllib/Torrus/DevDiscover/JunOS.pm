@@ -94,10 +94,10 @@ our $interfaceFilter;
 our $interfaceFilterOverlay;
 my %junosInterfaceFilter;
 
-if( not defined( $interfaceFilter ) )
-{
+#if( not defined( $interfaceFilter ) )
+#{
     $interfaceFilter = \%junosInterfaceFilter;
-}
+#}
 
 
 # Key is some unique symbolic name, does not mean anything
@@ -105,6 +105,11 @@ if( not defined( $interfaceFilter ) )
 # ifDescr is the regexp to match the interface description
 %junosInterfaceFilter =
     (
+     'eth' => {
+         'ifType'  => 6,                   # mplsTunnel
+         'ifDescr' => '^!(\[NN\]|\[UN\])'
+     },
+     
      'lsi' => {
          'ifType'  => 150,                   # mplsTunnel
          'ifDescr' => '^lsi$'
@@ -120,6 +125,7 @@ if( not defined( $interfaceFilter ) )
 
      'propVirtual' => {
          'ifType'  => 53,                    # propVirtual
+         'ifDescr' => '^(em0)|(igb.)|(ixlv.+)|(pfe.)|(pfh)|(fxp)|(jsrv)|(lc)|(vt.)$'
      },
 
      'gre_ipip_pime_pimd_mtun'  => {
@@ -203,7 +209,7 @@ sub discover
         {
             $devdetails->setCap('jnxCoS');
             $data->{'jnxCos'}{'queue'} = $jnxCosFcIdToFcName;
-
+            
             # We need to find out all the interfaces that have CoS enabled
             # on them. We will use jnxCosQstatQedPkts as our reference point.
             my $jnxCosQstatQedPkts = $dd->walkSnmpTable('jnxCosQstatQedPkts');
