@@ -269,6 +269,14 @@ sub buildConfig
                     $ifParam->{'nodeid-interface-rx-power'} =
                         $interface->{$data->{'nameref'}{'ifNodeidPrefix'}} .
                         $interface->{$data->{'nameref'}{'ifNodeid'}} . '//RxLaserPower';
+                  
+		    $ifParam->{'nodeid-interface-tx-power'} =
+                        $interface->{$data->{'nameref'}{'ifNodeidPrefix'}} .
+                        $interface->{$data->{'nameref'}{'ifNodeid'}} . '//TxLaserPower';
+                    
+                    $ifParam->{'nodeid-tx-rx-power'} =
+                        $interface->{$data->{'nameref'}{'ifNodeidPrefix'}} .
+                        $interface->{$data->{'nameref'}{'ifNodeid'}} . '//tx-rx-power';
                    
                     my @splitlist = (split //, $ifIndex);
 
@@ -278,11 +286,6 @@ sub buildConfig
 
                     $ifParam->{'interface-index'} = $acxifIndex;
                     
-                    $ifParam->{'nodeid-interface-tx-power'} =
-                        $interface->{$data->{'nameref'}{'ifNodeidPrefix'}} .
-                        $interface->{$data->{'nameref'}{'ifNodeid'}} . '//TxLaserPower';
-                   
-
                     if( defined($data->{'nameref'}{'ifComment'}) and
                         defined($interface->{$data->{'nameref'}{'ifComment'}}) )
                     {

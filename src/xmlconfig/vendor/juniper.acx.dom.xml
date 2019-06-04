@@ -29,23 +29,12 @@
 <configuration>
 
 <definitions>
-<!-- Table jnxDomCurrentEntry -->
+<!-- Table jnxACXDomCurrentEntry -->
     <def name="rx_power" value='1.3.6.1.4.1.2636.3.47.1.1.5.1.2.111.112.116.105.99.115.68' />
     <def name="tx_power" value='1.3.6.1.4.1.2636.3.47.1.1.5.1.2.111.112.116.105.99.115.80' />
 </definitions>
 
 <datasources>
-
-  <template name="dom-acx-subtree">
-    <param name="precedence"     value="-600" />
-    <param name="comment"        value="Current ACX Digital Optical Monitoring values" />
-    <param name="graph-title"          value="%graph-string%" />
-    <param name="rrd-hwpredict"     value="disabled" />
-        <param name="data-file"
-               value="%system-id%_%interface-nick%_acxdom.rrd" />
-        <param name="devdiscover-nodetype"
-               value="Juniper_DOM_MIB::jnxACXDomCurrentEntry" />
-  </template>
 
   <template name="acxdom-interface">
     <!-- ********   DOM Statistics from table ACX ************ -->
@@ -59,7 +48,7 @@
         <param name="vertical-label"    value="dB" />
         <param name="nodeid"            value="%nodeid-interface-rx-power%"/>
         <param name="rrd-create-min"    value="-100"/>
-        <param name="hidden" value="yes"/>
+        <param name="hidden" value="no"/>
     </leaf>
     <leaf name="CurrentTxLaserPower">
         <param name="leaf-type"         value="rrd-def"/> 
@@ -71,7 +60,7 @@
         <param name="vertical-label"    value="dB" />
         <param name="nodeid"            value="%nodeid-interface-tx-power%"/>
         <param name="rrd-create-min"    value="-100"/>
-        <param name="hidden" value="yes"/>
+        <param name="hidden" value="no"/>
 </leaf>
     <leaf name="TX_RX_DOM">
         <param name="ds-type" value="rrd-multigraph" />
